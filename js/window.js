@@ -1,4 +1,4 @@
-define(['jquery'], function($) {
+define(['jquery', 'jqueryUI'], function($, $UI) {
     function Window() {
         this.cfg = {
             width : 500,
@@ -8,7 +8,10 @@ define(['jquery'], function($) {
             title : "系统消息",
             hasCloseBtn : true,
             skinClassName : null,
-            textAlterBtn : "OK"
+            textAlterBtn : "OK",
+            hasMark : true,
+            isDraggable : true,
+            dragHandle : null
         };
     }
 
@@ -23,10 +26,16 @@ define(['jquery'], function($) {
                             '</div>'
                         ),
                         btn = boundingBox.find(".window_footer input");
+                        mask = null;
+                        if (CFG.hasMark) {
+                            mask = $('<div class="window_mask"></div>');
+                            mask.appendTo("body");
+                        }
                         boundingBox.appendTo("body");
                         btn.click(function() {
                             CFG.handler && CFG.handler();
                             boundingBox.remove();
+                            mask && mask.remove();
                         });
                         boundingBox.css({
                             width : CFG.width + "px",
@@ -39,10 +48,19 @@ define(['jquery'], function($) {
                             closeBtn.appendTo(boundingBox);
                             closeBtn.click(function() {
                                 boundingBox.remove();
+                                mask && mask.remove();
                             });
                         }
                         if (CFG.skinClassName) {
                             boundingBox.addClass(CFG.skinClassName);
+                        }
+                        if (CFG.isDraggable) {
+                            if (CFG.dragHandle) {
+                                boundingBox.draggable({handle : CFG.dragHandle});
+                            }
+                            else {
+                                boundingBox.draggable();
+                            }
                         }
         },
         confirm : function() {

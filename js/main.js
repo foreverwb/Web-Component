@@ -1,15 +1,17 @@
 require.config({
     paths : {
-        jquery : 'jquery'
+        jquery : 'jquery',
+        jqueryUI : 'http://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui'
     }
 });
 
 require(['jquery', 'window'], function($, w) {
     $("#a").click(function() {
          new w.Window().alert({
+            dragHandle : ".window_header",
             textAlterBtn : "确定",
             skinClassName : null,
-            hasCloseBtn : false,
+            hasCloseBtn : true,
             title : "提示",
             content : "Hello",
             handler : function() {
